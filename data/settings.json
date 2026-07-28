@@ -1,0 +1,83 @@
+{
+    "store_name": "AtoZ.ps - أبو زهرة إلكترونيك",
+    "tagline": "وجهتك الأولى في فلسطين | Expect More...",
+    "bio_html": "<p><b>إلكترونيات، أجهزة كهربائية، اكسسوارات</b></p><p>ابقَ على تواصل معنا.</p>",
+    "website_url": "https://www.AtoZ.ps",
+    "phone": "1700111222",
+    "footer_text": "AtoZ - ابو زهرة الكترونيك © {year} — جميع الحقوق محفوظة",
+    "logo_url": "assets/img/icons/icon_3443ebc3f21a4823.jpg",
+    "logo_shape": "circle",
+    "logo_glow": true,
+    "branches": [
+        {
+            "id": "br_1",
+            "name": "نابلس - فرع الإلكترونيات - شارع المدارس",
+            "maps_url": "https://www.google.com/maps?daddr=%D9%86%D8%A7%D8%A8%D9%84%D8%B3",
+            "whatsapp": "",
+            "order": 1
+        },
+        {
+            "id": "br_1783459140070",
+            "name": "نابلس - فرع الإكسسوارات – شارع فيصل - فرع الجملة",
+            "maps_url": "https://www.google.com/maps?daddr=%D9%86%D8%A7%D8%A8%D9%84%D8%B3",
+            "whatsapp": "972595671331",
+            "order": 2
+        },
+        {
+            "id": "br_1783459175681",
+            "name": "نابلس - (رحال) أبو زهرة - شارع المدارس - دخلة مستوصف الرحمة",
+            "maps_url": "https://www.google.com/maps?daddr=%D9%86%D8%A7%D8%A8%D9%84%D8%B3",
+            "whatsapp": "",
+            "order": 3
+        },
+        {
+            "id": "br_1783459192692",
+            "name": "نابلس - شارع رفيديا الرئيسي - مقابل الجنبد",
+            "maps_url": "https://www.google.com/maps/place/%D8%A7%D8%A8%D9%88+%D8%B2%D9%87%D8%B1%D9%87+%D8%A7%D9%84%D9%83%D8%AA%D8%B1%D9%88%D9%86%D9%8A%D9%83%E2%80%AD/@31.9234871,35.2060499,843m",
+            "whatsapp": "",
+            "order": 4
+        },
+        {
+            "id": "br_1783459672823",
+            "name": "نابلس - فرع جامعة النجاح (الأكاديمية) - طابق B6",
+            "maps_url": "",
+            "whatsapp": "",
+            "order": 5
+        },
+        {
+            "id": "br_1783459692196",
+            "name": "نابلس - شارع عصيرة - بجانب ليل نهار",
+            "maps_url": "https://www.google.com/maps/place/%D8%A7%D8%A8%D9%88+%D8%B2%D9%87%D8%B1%D8%A9+%D8%A7%D9%84%D9%83%D8%AA%D8%B1%D9%88%D9%86%D9%8A%D9%83%E2%80%AD/@32.234319,35.2454874,841m",
+            "whatsapp": "",
+            "order": 6
+        },
+        {
+            "id": "br_1783459719420",
+            "name": "رام الله – حي الماصيون - بجانب شرطة الضواحي",
+            "maps_url": "",
+            "whatsapp": "",
+            "order": 7
+        },
+        {
+            "id": "br_1783464165623",
+            "name": "رام الله - شارع الارسال - نبالي والفارس",
+            "maps_url": "https://www.google.com/maps/place/%D8%A7%D8%A8%D9%88+%D8%B2%D9%87%D8%B1%D9%87+%D8%A7%D9%84%D9%83%D8%AA%D8%B1%D9%88%D9%86%D9%8A%D9%83%E2%80%AD/@31.9234871,35.2060499,843m",
+            "whatsapp": "",
+            "order": 8
+        }
+    ],
+    "app_links": {
+        "android": "https://play.google.com/store/apps/details?id=ps.swift.atoz",
+        "ios": "https://apps.apple.com/us/app/atoz-store/id1596295441",
+        "app_block_position": "bottom"
+    },
+    "appearance": {
+        "background_color": "#0c1727",
+        "primary_color": "#00bed9",
+        "secondary_color": "#efefef",
+        "layout_style": "list",
+        "card_style": "glass"
+    },
+    "tracking_scripts_head": "",
+    "tracking_scripts_body": "<!--Start of Tawk.to Script-->\n<script type=\"text/javascript\">\nvar Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();\n(function(){\nvar s1=document.createElement(\"script\"),s0=document.getElementsByTagName(\"script\")[0];\ns1.async=true;\ns1.src='https://embed.tawk.to/6a50e57f3aefa41d451da3ae/1jt600v25';\ns1.charset='UTF-8';\ns1.setAttribute('crossorigin','*');\ns0.parentNode.insertBefore(s1,s0);\n})();\n</script>\n<!--End of Tawk.to Script-->"
+}

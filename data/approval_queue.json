@@ -1,0 +1,66 @@
+[
+    {
+        "id": "apv_ced2084ae23ad310",
+        "submitted_by": "abood",
+        "resource": "settings",
+        "payload": {
+            "store_name": "AtoZ.ps - أبو زهرة للإلكترونيات",
+            "tagline": "وجهتك الأولى في فلسطين | Expect More...",
+            "bio_html": "<p><b>إلكترونيات، أجهزة كهربائية، اكسسوارات</b></p><p>تصفح فروعنا وابقَ على تواصل معنا.</p>",
+            "website_url": "https://www.AtoZ.ps",
+            "phone": "1700111222",
+            "footer_text": "AtoZ Store © {year} — جميع الحقوق محفوظة",
+            "logo_shape": "circle",
+            "logo_glow": false,
+            "logo_url": "assets/img/icons/icon_7cca60e9826a1b4d.jpg"
+        },
+        "status": "approved",
+        "created_at": "2026-07-10T15:23:45+03:00",
+        "reviewed_by": "admin",
+        "reviewed_at": "2026-07-10T15:24:05+03:00"
+    },
+    {
+        "id": "apv_b28cb1b9b240751a",
+        "submitted_by": "Mhnd",
+        "resource": "settings",
+        "payload": {
+            "store_name": "AtoZ.ps - أبو زهرة إلكترونيك",
+            "tagline": "وجهتك الأولى في فلسطين | Expect More...",
+            "bio_html": "<p><b>إلكترونيات، أجهزة كهربائية، اكسسوارات</b></p><p>ابقَ على تواصل معنا.</p>",
+            "website_url": "https://www.AtoZ.ps",
+            "phone": "1700111222",
+            "footer_text": "AtoZ Store © {year} — جميع الحقوق محفوظة",
+            "logo_shape": "circle",
+            "logo_glow": true,
+            "logo_url": "assets/img/icons/icon_3443ebc3f21a4823.jpg"
+        },
+        "status": "approved",
+        "created_at": "2026-07-10T15:56:25+03:00",
+        "reviewed_by": "admin",
+        "reviewed_at": "2026-07-10T15:56:52+03:00"
+    },
+    {
+        "id": "apv_d52b82ffbea3007b",
+        "submitted_by": "Mhnd",
+        "resource": "settings",
+        "payload": {
+            "appearance": {
+                "background_color": "#0c1627",
+                "primary_color": "#00bed9",
+                "secondary_color": "#efefef",
+                "layout_style": "list",
+                "card_style": "glass"
+            },
+            "app_links": {
+                "android": "https://play.google.com/store/apps/details?id=ps.swift.atoz",
+                "ios": "https://apps.apple.com/us/app/atoz-store/id1596295441",
+                "app_block_position": "bottom"
+            }
+        },
+        "status": "rejected",
+        "created_at": "2026-07-10T15:58:03+03:00",
+        "reviewed_by": "admin",
+        "reviewed_at": "2026-07-10T15:58:44+03:00",
+        "reject_note": "test"
+    }
+]
