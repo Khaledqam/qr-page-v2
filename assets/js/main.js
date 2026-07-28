@@ -232,6 +232,28 @@
       const linksData = await linksRes.json();
       const settings  = await settingsRes.json();
 
+      // Inject tracking scripts (head and body) if present
+      if (settings.tracking_scripts_head) {
+        const headPlaceholder = document.querySelector('meta[name="robots"]');
+        if (headPlaceholder) {
+          const temp = document.createElement('div');
+          temp.innerHTML = settings.tracking_scripts_head;
+          while (temp.firstChild) {
+            headPlaceholder.parentNode.insertBefore(temp.firstChild, headPlaceholder.nextSibling);
+          }
+        }
+      }
+      if (settings.tracking_scripts_body) {
+        const bodyPlaceholder = document.getElementById('footerText')?.parentNode;
+        if (bodyPlaceholder) {
+          const temp = document.createElement('div');
+          temp.innerHTML = settings.tracking_scripts_body;
+          while (temp.firstChild) {
+            bodyPlaceholder.appendChild(temp.firstChild);
+          }
+        }
+      }
+
       // Header
       document.getElementById('storeName').textContent = settings.store_name || 'AtoZ Store';
       document.getElementById('taglineText').textContent = settings.tagline || 'Expect More...';

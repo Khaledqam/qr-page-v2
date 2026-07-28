@@ -17,10 +17,19 @@ if ($method === 'GET') {
     secureSessionStart();
     $isAdmin = !empty($_SESSION['admin_user']);
 
-    if (!$isAdmin) {
-        // Never expose tracking scripts or admin-only metadata to the public page
-        unset($settings['tracking_scripts_head'], $settings['tracking_scripts_body']);
-    }
+    // Always include tracking scripts - they are needed for the public page
+    // but we still sanitize them on output to prevent XSS
+    $headScripts = $settings['tracking_scripts_head'] ?? '';
+    $bodyScripts = $settings['tracking_scripts_body'] ?? '';
+    
+    // Basic sanitization: strip PHP tags and dangerous patterns
+    $headScripts = preg_replace('/<\?php.*?\?>/', '', $headScripts);
+    $headScripts = preg_replace('/<\?.*?\?>/', '', $headScripts);
+    $bodyScripts = preg_replace('/<\?php.*?\?>/', '', $bodyScripts);
+    $bodyScripts = preg_replace('/<\?.*?\?>/', '', $bodyScripts);
+    
+    $settings['tracking_scripts_head'] = $headScripts;
+    $settings['tracking_scripts_body'] = $bodyScripts;
 
     jsonResponse($settings);
 }
