@@ -108,6 +108,7 @@ if ($isLoggedIn) {
     <button class="admin__tab"                    role="tab" data-tab="branches"       aria-selected="false">الفروع</button>
     <button class="admin__tab"                    role="tab" data-tab="appearance"     aria-selected="false">المظهر</button>
     <button class="admin__tab"                    role="tab" data-tab="integrations"   aria-selected="false">التكاملات</button>
+    <button class="admin__tab"                    role="tab" data-tab="profile"        aria-selected="false">حسابي</button>
     <button class="admin__tab"                    role="tab" data-tab="users"          aria-selected="false" id="usersTab" hidden>المستخدمون</button>
     <button class="admin__tab"                    role="tab" data-tab="approvals"      aria-selected="false" id="approvalsTab" hidden>الموافقات</button>
     <button class="admin__tab"                    role="tab" data-tab="import-export"  aria-selected="false">استيراد/تصدير</button>
@@ -319,6 +320,44 @@ if ($isLoggedIn) {
     </div>
     <button id="createUserBtn" class="btn btn--primary">إنشاء المستخدم</button>
     <p class="admin__status" id="usersStatus"></p>
+  </section>
+
+  <!-- ---- PROFILE TAB (all users) ---- -->
+  <section class="admin__panel" data-panel="profile" role="tabpanel" hidden>
+    <p class="admin__hint">إعدادات حسابك الشخصي - تغيير كلمة المرور والاسم المعروض</p>
+    
+    <div class="form-grid">
+      <div>
+        <label class="admin__label" for="profileUsername">اسم المستخدم</label>
+        <input class="admin__input" id="profileUsername" type="text" disabled style="background:var(--color-surface-2);cursor:not-allowed">
+      </div>
+      <div>
+        <label class="admin__label" for="profileDisplayName">الاسم المعروض</label>
+        <input class="admin__input" id="profileDisplayName" type="text" placeholder="محمد أحمد">
+      </div>
+    </div>
+    
+    <hr class="admin__divider">
+    
+    <h3 class="admin__section-title">تغيير كلمة المرور</h3>
+    <div class="form-grid">
+      <div>
+        <label class="admin__label" for="currentPassword">كلمة المرور الحالية</label>
+        <input class="admin__input" id="currentPassword" type="password" placeholder="أدخل كلمة المرور الحالية" dir="ltr">
+      </div>
+      <div></div>
+      <div>
+        <label class="admin__label" for="newProfilePassword">كلمة المرور الجديدة</label>
+        <input class="admin__input" id="newProfilePassword" type="password" placeholder="8 أحرف على الأقل" dir="ltr">
+      </div>
+      <div>
+        <label class="admin__label" for="confirmProfilePassword">تأكيد كلمة المرور</label>
+        <input class="admin__input" id="confirmProfilePassword" type="password" placeholder="أعد إدخال كلمة المرور الجديدة" dir="ltr">
+      </div>
+    </div>
+    
+    <button id="saveProfileBtn" class="btn btn--primary">حفظ التغييرات</button>
+    <p class="admin__status" id="profileStatus"></p>
   </section>
 
   <!-- ---- APPROVALS TAB (admin+ only) ---- -->

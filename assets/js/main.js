@@ -234,24 +234,50 @@
 
       // Inject tracking scripts (head and body) if present
       if (settings.tracking_scripts_head) {
-        const headPlaceholder = document.querySelector('meta[name="robots"]');
-        if (headPlaceholder) {
-          const temp = document.createElement('div');
-          temp.innerHTML = settings.tracking_scripts_head;
-          while (temp.firstChild) {
-            headPlaceholder.parentNode.insertBefore(temp.firstChild, headPlaceholder.nextSibling);
-          }
-        }
+        injectTrackingScripts(settings.tracking_scripts_head);
       }
       if (settings.tracking_scripts_body) {
-        const bodyPlaceholder = document.getElementById('footerText')?.parentNode;
-        if (bodyPlaceholder) {
-          const temp = document.createElement('div');
-          temp.innerHTML = settings.tracking_scripts_body;
-          while (temp.firstChild) {
-            bodyPlaceholder.appendChild(temp.firstChild);
+        injectTrackingScripts(settings.tracking_scripts_body);
+      }
+
+      /**
+       * Safely inject tracking scripts by creating actual script elements
+       * This ensures scripts like Tawk.to execute properly
+       */
+      function injectTrackingScripts(scriptHtml) {
+        const temp = document.createElement('div');
+        temp.innerHTML = scriptHtml;
+        
+        const scripts = temp.querySelectorAll('script');
+        scripts.forEach((oldScript) => {
+          const newScript = document.createElement('script');
+          
+          // Copy all attributes
+          Array.from(oldScript.attributes).forEach(attr => {
+            newScript.setAttribute(attr.name, attr.value);
+          });
+          
+          // Copy inline script content
+          if (oldScript.textContent) {
+            newScript.textContent = oldScript.textContent;
           }
-        }
+          
+          // Insert into appropriate location
+          if (newScript.getAttribute('src')) {
+            // External script - add to head
+            document.head.appendChild(newScript);
+          } else {
+            // Inline script - add to body to execute immediately
+            document.body.appendChild(newScript);
+          }
+        });
+        
+        // Inject any non-script elements (like noscript)
+        Array.from(temp.childNodes).forEach(node => {
+          if (node.nodeName !== 'SCRIPT') {
+            document.body.appendChild(node.cloneNode(true));
+          }
+        });
       }
 
       // Header

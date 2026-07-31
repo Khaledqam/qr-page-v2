@@ -681,6 +681,70 @@
   document.querySelector('.admin__tab[data-tab="users"]')?.addEventListener('click', loadUsers);
 
   /* ================================================================
+     PROFILE MANAGEMENT (all users)
+     ================================================================ */
+  function initProfileTab() {
+    // Populate profile fields with current user data
+    const usernameEl = document.getElementById('profileUsername');
+    const displayNameEl = document.getElementById('profileDisplayName');
+    
+    if (usernameEl) usernameEl.value = settingsState.current_username || '';
+    if (displayNameEl) displayNameEl.value = settingsState.current_display_name || '';
+  }
+
+  document.getElementById('saveProfileBtn')?.addEventListener('click', async () => {
+    const currentPassword = document.getElementById('currentPassword')?.value || '';
+    const newPassword = document.getElementById('newProfilePassword')?.value || '';
+    const confirmPassword = document.getElementById('confirmProfilePassword')?.value || '';
+    const newDisplayName = document.getElementById('profileDisplayName')?.value.trim();
+
+    // Validate password match
+    if (newPassword && newPassword !== confirmPassword) {
+      setStatus('profileStatus', 'كلمتا المرور غير متطابقتين', true);
+      return;
+    }
+
+    // Validate minimum length
+    if (newPassword && newPassword.length < 8) {
+      setStatus('profileStatus', 'كلمة المرور الجديدة يجب أن تكون 8 أحرف على الأقل', true);
+      return;
+    }
+
+    // Check if at least one field is changed
+    if (!newPassword && !newDisplayName) {
+      setStatus('profileStatus', 'يرجى إدخال كلمة مرور جديدة أو تغيير الاسم المعروض', true);
+      return;
+    }
+
+    setStatus('profileStatus', 'جاري الحفظ...');
+    try {
+      const res = await apiPost(API.auth, {
+        action: 'profile_update',
+        display_name: newDisplayName || undefined,
+        current_password: newPassword ? currentPassword : undefined,
+        new_password: newPassword || undefined,
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setStatus('profileStatus', '✔ تم تحديث الملف الشخصي');
+        // Clear password fields
+        ['currentPassword', 'newProfilePassword', 'confirmProfilePassword'].forEach(id => {
+          const el = document.getElementById(id);
+          if (el) el.value = '';
+        });
+        // Update header if display name changed
+        if (newDisplayName && data.user) {
+          document.getElementById('headerUsername')?.textContent = newDisplayName;
+        }
+      } else {
+        setStatus('profileStatus', data.error || 'فشل التحديث', true);
+      }
+    } catch {
+      setStatus('profileStatus', 'تعذر الاتصال بالخادم', true);
+    }
+  });
+
+  /* ================================================================
      IMPORT / EXPORT
      ================================================================ */
   document.getElementById('exportBtn')?.addEventListener('click', () => {
@@ -744,9 +808,10 @@
      ================================================================ */
   async function init() {
     /* 1. Fetch CSRF token + current user role */
+    let checkData = {};
     try {
       const checkRes  = await fetch(`${API.auth}?action=check`);
-      const checkData = await checkRes.json();
+      checkData = await checkRes.json();
       csrfToken   = checkData.csrf_token || '';
       currentRole = checkData.role || 'viewer';
 
@@ -813,7 +878,13 @@
     set('trackingHeadInput', settingsState.tracking_scripts_head || '');
     set('trackingBodyInput', settingsState.tracking_scripts_body || '');
 
-    /* 7. Check approval bar (admin+) */
+    /* 7. Profile tab - populate with current user info */
+    const profileUsername = document.getElementById('profileUsername');
+    const profileDisplayName = document.getElementById('profileDisplayName');
+    if (profileUsername) profileUsername.value = checkData.username || '';
+    if (profileDisplayName) profileDisplayName.value = checkData.display_name || '';
+
+    /* 8. Check approval bar (admin+) */
     if (['superadmin','admin'].includes(currentRole)) {
       checkApprovalBar();
     }
