@@ -249,44 +249,55 @@
       function injectTrackingScripts(scriptHtml, target = 'body') {
         const temp = document.createElement('div');
         temp.innerHTML = scriptHtml;
-        
+
         const scripts = temp.querySelectorAll('script');
         scripts.forEach((oldScript) => {
-          const newScript = document.createElement('script');
+          const src = oldScript.getAttribute('src');
           
-          // Copy all attributes
-          Array.from(oldScript.attributes).forEach(attr => {
-            newScript.setAttribute(attr.name, attr.value);
-          });
-          
-          // Copy inline script content
-          if (oldScript.textContent) {
-            newScript.textContent = oldScript.textContent;
-          }
-          
-          // Insert into appropriate location
-          if (newScript.getAttribute('src')) {
-            // External script - add to head for better loading
+          if (src) {
+            // External script - create and append to head
+            const newScript = document.createElement('script');
+            newScript.async = true;
+            newScript.src = src;
+            
+            // Copy other attributes
+            Array.from(oldScript.attributes).forEach(attr => {
+              if (attr.name !== 'src') {
+                newScript.setAttribute(attr.name, attr.value);
+              }
+            });
+            
             document.head.appendChild(newScript);
           } else {
             // Inline script - must execute immediately
-            // Re-create it to ensure execution
-            const reCreatedScript = document.createElement('script');
-            Array.from(newScript.attributes).forEach(attr => {
-              reCreatedScript.setAttribute(attr.name, attr.value);
-            });
-            if (newScript.textContent) {
-              reCreatedScript.textContent = newScript.textContent;
-            }
+            const scriptCode = oldScript.textContent || '';
             
-            if (target === 'head') {
-              document.head.appendChild(reCreatedScript);
-            } else {
-              document.body.appendChild(reCreatedScript);
+            if (scriptCode.trim()) {
+              try {
+                // For IIFE patterns like Tawk.to, execute directly via Function constructor
+                if (scriptCode.includes('(function()')) {
+                  const fn = new Function(scriptCode);
+                  fn.call(window);
+                } else {
+                  // Regular inline script - use traditional method
+                  const newScript = document.createElement('script');
+                  Array.from(oldScript.attributes).forEach(attr => {
+                    newScript.setAttribute(attr.name, attr.value);
+                  });
+                  newScript.textContent = scriptCode;
+                  if (target === 'head') {
+                    document.head.appendChild(newScript);
+                  } else {
+                    document.body.appendChild(newScript);
+                  }
+                }
+              } catch (e) {
+                console.error('Error executing tracking script:', e);
+              }
             }
           }
         });
-        
+
         // Inject any non-script elements (like noscript)
         Array.from(temp.childNodes).forEach(node => {
           if (node.nodeName !== 'SCRIPT') {
