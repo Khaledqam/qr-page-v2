@@ -234,17 +234,19 @@
 
       // Inject tracking scripts (head and body) if present
       if (settings.tracking_scripts_head) {
-        injectTrackingScripts(settings.tracking_scripts_head);
+        injectTrackingScripts(settings.tracking_scripts_head, 'head');
       }
       if (settings.tracking_scripts_body) {
-        injectTrackingScripts(settings.tracking_scripts_body);
+        injectTrackingScripts(settings.tracking_scripts_body, 'body');
       }
 
       /**
        * Safely inject tracking scripts by creating actual script elements
        * This ensures scripts like Tawk.to execute properly
+       * @param {string} scriptHtml - The HTML script tags to inject
+       * @param {'head' | 'body'} target - Where to inject the scripts
        */
-      function injectTrackingScripts(scriptHtml) {
+      function injectTrackingScripts(scriptHtml, target = 'body') {
         const temp = document.createElement('div');
         temp.innerHTML = scriptHtml;
         
@@ -264,18 +266,35 @@
           
           // Insert into appropriate location
           if (newScript.getAttribute('src')) {
-            // External script - add to head
+            // External script - add to head for better loading
             document.head.appendChild(newScript);
           } else {
-            // Inline script - add to body to execute immediately
-            document.body.appendChild(newScript);
+            // Inline script - must execute immediately
+            // Re-create it to ensure execution
+            const reCreatedScript = document.createElement('script');
+            Array.from(newScript.attributes).forEach(attr => {
+              reCreatedScript.setAttribute(attr.name, attr.value);
+            });
+            if (newScript.textContent) {
+              reCreatedScript.textContent = newScript.textContent;
+            }
+            
+            if (target === 'head') {
+              document.head.appendChild(reCreatedScript);
+            } else {
+              document.body.appendChild(reCreatedScript);
+            }
           }
         });
         
         // Inject any non-script elements (like noscript)
         Array.from(temp.childNodes).forEach(node => {
           if (node.nodeName !== 'SCRIPT') {
-            document.body.appendChild(node.cloneNode(true));
+            if (target === 'head') {
+              document.head.appendChild(node.cloneNode(true));
+            } else {
+              document.body.appendChild(node.cloneNode(true));
+            }
           }
         });
       }
