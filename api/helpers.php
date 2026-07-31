@@ -152,6 +152,39 @@ function requireAuth(): array
 }
 
 /**
+ * Get current user from session/cookie without requiring auth.
+ * Returns null if not authenticated.
+ */
+function getCurrentUser(): ?array
+{
+    secureSessionStart();
+    // Check standard session login
+    if (!empty($_SESSION['admin_user'])) {
+        $users = readJson('users.json') ?? [];
+        foreach ($users as $u) {
+            if ($u['username'] === $_SESSION['admin_user']) {
+                return $u;
+            }
+        }
+    }
+    // Check remember-me token from cookie
+    $rmToken = $_COOKIE['atoz_rm'] ?? '';
+    if ($rmToken) {
+        $users = readJson('users.json') ?? [];
+        foreach ($users as $u) {
+            foreach ($u['remember_tokens'] ?? [] as $rt) {
+                if (isset($rt['expires']) && time() > $rt['expires']) continue;
+                if (hash_equals($rt['token_hash'], hash('sha256', $rmToken))) {
+                    $_SESSION['admin_user'] = $u['username'];
+                    return $u;
+                }
+            }
+        }
+    }
+    return null;
+}
+
+/**
  * Check if the current user has a specific permission.
  * Superadmin has wildcard '*'.
  */

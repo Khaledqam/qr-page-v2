@@ -191,6 +191,42 @@ if ($action === 'users_list') {
     jsonResponse(['users' => $safe]);
 }
 
+// Profile update - change own password and display name (available to all users)
+if ($action === 'profile_update') {
+    $newDisplay = $input['display_name'] ?? null;
+    $currentPassword = $input['current_password'] ?? null;
+    $newPassword = $input['new_password'] ?? null;
+    
+    $users = readJson('users.json') ?? [];
+    $found = false;
+    foreach ($users as &$u) {
+        if ($u['username'] === $currentUser['username']) {
+            if ($newDisplay) {
+                $u['display_name'] = trim($newDisplay);
+            }
+            if ($newPassword && $currentPassword) {
+                // Verify current password first
+                if (!password_verify($currentPassword, $u['password_hash'])) {
+                    jsonResponse(['error' => 'كلمة المرور الحالية غير صحيحة'], 401);
+                }
+                if (strlen($newPassword) < 8) {
+                    jsonResponse(['error' => 'كلمة المرور الجديدة يجب أن تكون 8 أحرف على الأقل'], 400);
+                }
+                $u['password_hash'] = password_hash($newPassword, PASSWORD_BCRYPT, ['cost' => 12]);
+            } elseif ($newPassword && !$currentPassword) {
+                jsonResponse(['error' => 'يجب إدخال كلمة المرور الحالية لتغييرها'], 400);
+            }
+            $found = true;
+            break;
+        }
+    }
+    unset($u);
+    if (!$found) jsonResponse(['error' => 'المستخدم غير موجود'], 404);
+    backupBeforeWrite('users.json');
+    writeJson('users.json', $users);
+    jsonResponse(['ok' => true, 'message' => 'تم تحديث الملف الشخصي']);
+}
+
 if ($action === 'users_create') {
     requirePermission($currentUser, '*');
     $newUsername    = trim((string)($input['username'] ?? ''));
